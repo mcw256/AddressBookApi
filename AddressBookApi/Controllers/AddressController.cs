@@ -1,5 +1,6 @@
 ﻿using AddressBookApi.Models;
 using AddressBookApi.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,13 @@ namespace AddressBookApi.Controllers
             _addressRepo = addressRepo;
         }
 
-        // GET: api/<AddressController>
+        /// <summary>
+        /// Gets last address
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get()
         {
             try
@@ -33,8 +39,14 @@ namespace AddressBookApi.Controllers
             }
         }
 
-        // GET api/<AddressController>/street
+        /// <summary>
+        /// Gets addresses by street
+        /// </summary>
+        /// <param name="street"></param>
+        /// <returns></returns>
         [HttpGet("{street}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Address>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(string street)
         {
             try
@@ -47,8 +59,14 @@ namespace AddressBookApi.Controllers
             }
         }
 
-        // POST api/<AddressController>
+        /// <summary>
+        /// Adds new address
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Address))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] Address address)
         {
             try
@@ -62,8 +80,15 @@ namespace AddressBookApi.Controllers
             }
         }
 
-        // PUT api/<AddressController>/id
+        /// <summary>
+        /// Updates existing address
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="address"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(int id, [FromBody] Address address)
         {
             try
@@ -76,8 +101,14 @@ namespace AddressBookApi.Controllers
             }
         }
 
-        // DELETE api/<AddressController>/id
+        /// <summary>
+        /// Deletes address
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
         {
             try

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AddressBookApi.Middleware;
+using System.IO;
 
 namespace AddressBookApi
 {
@@ -24,6 +25,7 @@ namespace AddressBookApi
         }
 
         public IConfiguration Configuration { get; }
+        public object PlatformServices { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -31,11 +33,24 @@ namespace AddressBookApi
             services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
             services.AddSingleton<IAddressRepo, AddressRepo>();
 
-            services.AddControllers().AddJsonOptions(options => {
+            services.AddControllers().AddJsonOptions(options =>
+            {
                 options.JsonSerializerOptions.IgnoreNullValues = true;
+            }).ConfigureApiBehaviorOptions(o => 
+            { 
+                o.SuppressMapClientErrors = true; 
             });
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+           {
+
+               var XMLPath = AppDomain.CurrentDomain.BaseDirectory + nameof(AddressBookApi) + ".xml";
+               if (File.Exists(XMLPath))
+               {
+                   options.IncludeXmlComments(XMLPath);
+               }
+
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
