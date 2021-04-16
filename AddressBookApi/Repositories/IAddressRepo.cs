@@ -8,14 +8,14 @@ namespace AddressBookApi.Repositories
 {
     public interface IAddressRepo
     {
-        public Address GetLastAddress();
+        public Task<Address> GetLastAddress();
 
-        public List<Address> GetAddressesByStreet(string street);
+        public Task<List<Address>> GetAddressesByStreet(string street);
 
-        public Address AddNewAddress(Address address);
+        public Task<Address> AddNewAddress(Address address);
 
-        public Address UpdateAddressById(int id, Address address);
+        public Task<Address> UpdateAddressById(int id, Address address);
 
-        public Address DeleteAddressById(int id);
+        public Task<Address> DeleteAddressById(int id);
     }
 }
