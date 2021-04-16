@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AddressBookApi.Middleware;
 
 namespace AddressBookApi
 {
@@ -44,6 +45,8 @@ namespace AddressBookApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseRequestLogging();
 
             app.UseHttpsRedirection();
 
