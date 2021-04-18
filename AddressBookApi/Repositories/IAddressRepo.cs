@@ -18,8 +18,7 @@ namespace AddressBookApi.Repositories
 
         public Task<Address> UpdateAddressById(int id, Address address);
 
-        public Task<Address> DeleteAddressById(int id);
+        public Task DeleteAddressById(int id);
 
-       
     }
 }

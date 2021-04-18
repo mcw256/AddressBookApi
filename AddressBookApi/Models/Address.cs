@@ -1,14 +1,20 @@
-﻿namespace AddressBookApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AddressBookApi.Models
 {
     public class Address
     {
+        [Required]
         public int? Id { get; set; }
 
-        public string? Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-        public string? City { get; set; }
+        [Required]
+        public string City { get; set; }
 
-        public string? Street { get; set; }
+        [Required]
+        public string Street { get; set; }
 
     }
 }

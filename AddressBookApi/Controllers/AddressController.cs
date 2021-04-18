@@ -134,7 +134,8 @@ namespace AddressBookApi.Controllers
         {
             try
             {
-                return Ok(await _addressRepo.DeleteAddressById(id));
+                await _addressRepo.DeleteAddressById(id);
+                return Ok();
             }
             catch (Exception e)
             {
