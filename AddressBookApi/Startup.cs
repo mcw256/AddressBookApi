@@ -1,18 +1,12 @@
+using AddressBookApi.Middleware;
 using AddressBookApi.Repositories;
 using AddressBookApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AddressBookApi.Middleware;
 using System.IO;
 
 namespace AddressBookApi
@@ -36,9 +30,9 @@ namespace AddressBookApi
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.IgnoreNullValues = true;
-            }).ConfigureApiBehaviorOptions(o => 
-            { 
-                o.SuppressMapClientErrors = true; 
+            }).ConfigureApiBehaviorOptions(o =>
+            {
+                o.SuppressMapClientErrors = true;
             });
 
             services.AddSwaggerGen(options =>

@@ -163,10 +163,7 @@ namespace AddressBookApi.Tests
 
             var content = new StringContent(JsonConvert.SerializeObject(new Address
             {
-                Id = 1,
                 Name = "UPDATED",
-                City = "qq",
-                Street = "ww"
             }), Encoding.UTF8, "application/json");
 
             // Act
