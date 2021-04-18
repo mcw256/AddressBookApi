@@ -10,12 +10,16 @@ namespace AddressBookApi.Repositories
     {
         public Task<Address> GetLastAddress();
 
-        public Task<List<Address>> GetAddressesByStreet(string street);
+        public Task<Address> GetAddressById(int id);
+
+        public Task<List<Address>> GetAddressesByCity(string street);
 
         public Task<Address> AddNewAddress(Address address);
 
         public Task<Address> UpdateAddressById(int id, Address address);
 
         public Task<Address> DeleteAddressById(int id);
+
+       
     }
 }

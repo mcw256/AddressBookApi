@@ -4,17 +4,24 @@
         <name>AddressBookApi</name>
     </assembly>
     <members>
-        <member name="M:AddressBookApi.Controllers.AddressController.Get">
+        <member name="M:AddressBookApi.Controllers.AddressController.GetLast">
             <summary>
             Gets last address
             </summary>
             <returns></returns>
         </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.Get(System.String)">
+        <member name="M:AddressBookApi.Controllers.AddressController.GetById(System.Int32)">
             <summary>
-            Gets addresses by street
+            Gets address by Id
             </summary>
-            <param name="street"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AddressBookApi.Controllers.AddressController.GetByCity(System.String)">
+            <summary>
+            Gets addresses by city
+            </summary>
+            <param name="city"></param>
             <returns></returns>
         </member>
         <member name="M:AddressBookApi.Controllers.AddressController.Post(AddressBookApi.Models.Address)">

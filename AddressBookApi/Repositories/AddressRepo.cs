@@ -24,9 +24,20 @@ namespace AddressBookApi.Repositories
             return await Task.Run(() => _memoryCache.Addresses.Last());
         }
 
-        public async Task<List<Address>> GetAddressesByStreet(string street)
+        public async Task<Address> GetAddressById(int id)
         {
-            return await Task.Run( () => _memoryCache.Addresses.Where(a => a.Street == street).ToList() ); 
+            if (!_memoryCache.Addresses.Exists(a => a.Id == id))
+                return new Address();
+
+            return await Task.Run(() => _memoryCache.Addresses.Where(a => a.Id == id).First());
+        }
+
+        public async Task<List<Address>> GetAddressesByCity(string city)
+        {
+            if (!_memoryCache.Addresses.Exists(a => a.City == city))
+                return new List<Address>();
+
+            return await Task.Run( () => _memoryCache.Addresses.Where(a => a.City == city).ToList() ); 
         }
 
         public async Task<Address> AddNewAddress(Address address)
@@ -34,7 +45,8 @@ namespace AddressBookApi.Repositories
             if (address.City == null || address.Name == null || address.Street == null)
                 throw new Exception("Missing data fields");
 
-            if (address.Id == null) address.Id = _memoryCache.Addresses.Last().Id + 1;
+            Random rnd = new Random();
+            if (address.Id == null) address.Id = rnd.Next();
 
             if (_memoryCache.Addresses.Exists(a => a.Id == address.Id))
                 throw new Exception("Address with given Id already exists!");
@@ -76,5 +88,6 @@ namespace AddressBookApi.Repositories
             return itemToRemove;
         }
 
+        
     }
 }

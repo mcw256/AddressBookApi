@@ -27,7 +27,7 @@ namespace AddressBookApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetLast()
         {
             try
             {
@@ -40,18 +40,39 @@ namespace AddressBookApi.Controllers
         }
 
         /// <summary>
-        /// Gets addresses by street
+        /// Gets address by Id
         /// </summary>
-        /// <param name="street"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{street}")]
+        [HttpGet("id/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetById(int id)
+        {
+                try
+                {
+                    return Ok(await _addressRepo.GetAddressById(id));
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+        }
+
+
+        /// <summary>
+        /// Gets addresses by city
+        /// </summary>
+        /// <param name="city"></param>
+        /// <returns></returns>
+        [HttpGet("{city}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Address>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(string street)
+        public async Task<IActionResult> GetByCity(string city)
         {
             try
             {
-                return Ok(await _addressRepo.GetAddressesByStreet(street));
+                return Ok(await _addressRepo.GetAddressesByCity(city));
             }
             catch (Exception e)
             {
@@ -72,7 +93,7 @@ namespace AddressBookApi.Controllers
             try
             {
                 await _addressRepo.AddNewAddress(address);
-                return CreatedAtAction(nameof(Get), address);
+                return CreatedAtAction(nameof(GetById), new { id = address.Id }, address);
             }
             catch (Exception e)
             {
