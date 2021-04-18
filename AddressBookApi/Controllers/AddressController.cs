@@ -26,7 +26,7 @@ namespace AddressBookApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> GetLast()
         {
             try
@@ -46,17 +46,17 @@ namespace AddressBookApi.Controllers
         /// <returns></returns>
         [HttpGet("id/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> GetById(int id)
         {
-                try
-                {
-                    return Ok(await _addressRepo.GetAddressById(id));
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e.Message);
-                }
+            try
+            {
+                return Ok(await _addressRepo.GetAddressById(id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
+            }
         }
 
 
@@ -67,7 +67,7 @@ namespace AddressBookApi.Controllers
         /// <returns></returns>
         [HttpGet("{city}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Address>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> GetByCity(string city)
         {
             try
@@ -76,7 +76,7 @@ namespace AddressBookApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
@@ -87,8 +87,8 @@ namespace AddressBookApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] Address address)
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
+        public async Task<IActionResult> Add([FromBody] Address address)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace AddressBookApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
@@ -109,7 +109,7 @@ namespace AddressBookApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> Update(int id, [FromBody] Address address)
         {
             try
@@ -118,7 +118,7 @@ namespace AddressBookApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
@@ -129,7 +129,7 @@ namespace AddressBookApi.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -139,7 +139,7 @@ namespace AddressBookApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 

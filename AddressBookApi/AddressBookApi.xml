@@ -24,7 +24,7 @@
             <param name="city"></param>
             <returns></returns>
         </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.Post(AddressBookApi.Models.Address)">
+        <member name="M:AddressBookApi.Controllers.AddressController.Add(AddressBookApi.Models.Address)">
             <summary>
             Adds new address
             </summary>
