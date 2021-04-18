@@ -67,19 +67,19 @@ namespace AddressBookApi.Tests
         }
 
         [Fact]
-        public async void GetAddressesByStreet_ShouldReturnOneAddress()
+        public async void GetAddressesByCity_ShouldReturnOneAddress()
         {
             // Arrange
             CleanMemoryCache();
 
-            var secondAddress = new Address() { Id = 2, Name = "A", City = "B", Street = "C2" };
+            var secondAddress = new Address() { Id = 2, Name = "A", City = "B2", Street = "C2" };
             var expected = new List<Address>() { secondAddress };
 
-            _memoryCacheService.Addresses.Add(new Address() { Id = 1, Name = "A", City = "B", Street = "C1" });
+            _memoryCacheService.Addresses.Add(new Address() { Id = 1, Name = "A", City = "B1", Street = "C1" });
             _memoryCacheService.Addresses.Add(secondAddress);
 
             // Act
-            var actual = await _sut.GetAddressesByCity("C2");
+            var actual = await _sut.GetAddressesByCity("B2");
 
             // Assert
             var expectedStr = JsonSerializer.Serialize(expected);
@@ -89,7 +89,7 @@ namespace AddressBookApi.Tests
         }
 
         [Fact]
-        public async void GetAddressesByStreet_ShouldReturnTwoAddresses()
+        public async void GetAddressesByCity_ShouldReturnTwoAddresses()
         {
             // Arrange
             CleanMemoryCache();
@@ -98,12 +98,12 @@ namespace AddressBookApi.Tests
             var thirdAddress = new Address() { Id = 3, Name = "A", City = "B", Street = "C2" };
             var expected = new List<Address>() { secondAddress, thirdAddress };
 
-            _memoryCacheService.Addresses.Add(new Address() { Id = 1, Name = "A", City = "B", Street = "C1" });
+            _memoryCacheService.Addresses.Add(new Address() { Id = 1, Name = "A", City = "B1", Street = "C2" });
             _memoryCacheService.Addresses.Add(secondAddress);
             _memoryCacheService.Addresses.Add(thirdAddress);
 
             // Act
-            var actual = await _sut.GetAddressesByCity("C2");
+            var actual = await _sut.GetAddressesByCity("B");
 
             // Assert
             var expectedStr = JsonSerializer.Serialize(expected);
@@ -113,7 +113,7 @@ namespace AddressBookApi.Tests
         }
 
         [Fact]
-        public async void GetAddressesByStreet_ShouldReturnNoAddress()
+        public async void GetAddressesByCity_ShouldReturnNoAddress()
         {
             // Arrange
             CleanMemoryCache();
@@ -182,32 +182,7 @@ namespace AddressBookApi.Tests
             Assert.Equal(expectedStr, actualStr);
         }
 
-        [Fact]
-        public async void AddNewAddress_ShouldAddNoAddress_WhenMissingRequiredFields()
-        {
-            // Arrange
-            CleanMemoryCache();
-
-            var expected = new List<Address>();
-            expected.Add(new Address() { Id = 1, Name = "A", City = "B", Street = "C1" });
-            expected.Add(new Address() { Id = 2, Name = "A", City = "B", Street = "C2" });
-
-            _memoryCacheService.Addresses.Add(new Address() { Id = 1, Name = "A", City = "B", Street = "C1" });
-            _memoryCacheService.Addresses.Add(new Address() { Id = 2, Name = "A", City = "B", Street = "C2" });
-
-            // Act
-            Func<Task> act = async () => await _sut.AddNewAddress(new Address() { Name = "A", City = "B" });
-            var actual = _memoryCacheService.Addresses;
-
-            // Assert
-            var exception = await Assert.ThrowsAsync<Exception>(act);
-            Assert.Equal("Missing data fields", exception.Message);
-
-            var expectedStr = JsonSerializer.Serialize(expected);
-            var actualStr = JsonSerializer.Serialize(actual);
-            Assert.Equal(expectedStr, actualStr);
-        }
-
+       
         [Fact]
         public async void UpdateAddressById_ShouldUpdateOneAddress()
         {
@@ -223,7 +198,7 @@ namespace AddressBookApi.Tests
             _memoryCacheService.Addresses.Add(new Address() { Id = 2, Name = "A", City = "B", Street = "C2" });
 
             // Act
-            await _sut.UpdateAddressById(2, new Address { Street = "UPDATED" });
+            await _sut.UpdateAddressById(2, new Address() { Id = 2, Name = "A", City = "B", Street = "UPDATED" });
 
             var actual = _memoryCacheService.Addresses;
 
@@ -248,12 +223,12 @@ namespace AddressBookApi.Tests
             _memoryCacheService.Addresses.Add(new Address() { Id = 2, Name = "A", City = "B", Street = "C2" });
 
             // Act
-            Func<Task> act = async () => await _sut.UpdateAddressById(3, new Address { Street = "UPDATED" });
+            Func<Task> act = async () => await _sut.UpdateAddressById(3, new Address() { Id = 5, Name = "A", City = "UPDATED", Street = "C1" });
             var actual = _memoryCacheService.Addresses;
 
             // Assert
             var exception = await Assert.ThrowsAsync<Exception>(act);
-            Assert.Equal("Address doesn't exist!", exception.Message);
+            Assert.Equal("Address with given Id doesn't exist!", exception.Message);
 
             var expectedStr = JsonSerializer.Serialize(expected);
             var actualStr = JsonSerializer.Serialize(actual);
@@ -280,7 +255,7 @@ namespace AddressBookApi.Tests
 
             // Assert
             var exception = await Assert.ThrowsAsync<Exception>(act);
-            Assert.Equal("Address with given Id already exists!", exception.Message);
+            Assert.Equal("Address with given Id already exist!", exception.Message);
 
             var expectedStr = JsonSerializer.Serialize(expected);
             var actualStr = JsonSerializer.Serialize(actual);
@@ -327,13 +302,10 @@ namespace AddressBookApi.Tests
             _memoryCacheService.Addresses.Add(new Address() { Id = 2, Name = "A", City = "B", Street = "C2" });
 
             // Act
-            Func<Task> act = async () => await _sut.DeleteAddressById(4);
+            await _sut.DeleteAddressById(4);
             var actual = _memoryCacheService.Addresses;
 
             // Assert
-            var exception = await Assert.ThrowsAsync<Exception>(act);
-            Assert.Equal("Address with given Id doesn't exist!", exception.Message);
-
             var expectedStr = JsonSerializer.Serialize(expected);
             var actualStr = JsonSerializer.Serialize(actual);
             Assert.Equal(expectedStr, actualStr);

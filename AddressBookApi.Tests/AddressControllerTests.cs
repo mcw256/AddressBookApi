@@ -160,21 +160,21 @@ namespace AddressBookApi.Tests
                 Street = "ww"
             });
 
-
             var content = new StringContent(JsonConvert.SerializeObject(new Address
             {
+                Id = 1,
                 Name = "UPDATED",
+                City = "qq",
+                Street = "ww"
             }), Encoding.UTF8, "application/json");
 
             // Act
             var response = await client.PutAsync(_baseEndpoint + "/1", content);
-
             dynamic obj = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal("UPDATED", (string)obj.name);
-
         }
 
         [Fact] 

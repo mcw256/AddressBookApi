@@ -52,10 +52,10 @@ namespace AddressBookApi.Repositories
         public async Task<Address> UpdateAddressById(int id, Address address)
         {
             var addressFound = _memoryCache.Addresses.FirstOrDefault(a => a.Id == id);
-            if (address == null)
+            if (addressFound == null)
                 throw new Exception("Address with given Id doesn't exist!");
 
-            if (await Task.Run(() => _memoryCache.Addresses.Exists(a => a.Id == address.Id)))
+            if (await Task.Run(() => _memoryCache.Addresses.Exists(a => (address.Id != id) && (a.Id == address.Id))))
                 throw new Exception("Address with given Id already exist!");
 
 
