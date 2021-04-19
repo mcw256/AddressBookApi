@@ -12,7 +12,7 @@
         </member>
         <member name="M:AddressBookApi.Controllers.AddressController.GetById(System.Int32)">
             <summary>
-            Gets address by Id
+            Gets address by Id (I'm aware this endpoint is rather ugly, but you wanted to have straight up /{city} endpoint, and I had to solve it somehow)
             </summary>
             <param name="id"></param>
             <returns></returns>

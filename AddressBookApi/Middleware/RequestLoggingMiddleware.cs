@@ -37,7 +37,6 @@ namespace AddressBookApi.Middleware
                                    $"{context.Request.Path}{Environment.NewLine}" +
                                    $"{ReadStreamInChunks(requestStream)}{Environment.NewLine}");
             context.Request.Body.Position = 0;
-
             await _next(context);
         }
 

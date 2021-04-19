@@ -1,12 +1,5 @@
-﻿using AddressBookApi.Controllers;
-using AddressBookApi.Models;
-using AddressBookApi.Repositories;
-using AddressBookApi.Services;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Hosting;
+﻿using AddressBookApi.Models;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -27,7 +20,6 @@ namespace AddressBookApi.Tests
         {
             //Arrange
             await SetupAndRunHost();
-
             var firstAddress = new Address()
             {
                 Id = 1,
@@ -35,7 +27,6 @@ namespace AddressBookApi.Tests
                 City = "sdfsdf",
                 Street = "c"
             };
-
             var secondAddress = new Address()
             {
                 Id = 2,
@@ -43,7 +34,6 @@ namespace AddressBookApi.Tests
                 City = "gdfg",
                 Street = "w"
             };
-
             var thirdAddress = new Address()
             {
                 Id = 3,
@@ -56,8 +46,6 @@ namespace AddressBookApi.Tests
             _memoryCacheService.Addresses.Add(secondAddress);
             _memoryCacheService.Addresses.Add(thirdAddress);
 
-
-            // Assert
             var expectedStr = JsonSerializer.Serialize(thirdAddress);
 
             // Act
@@ -74,7 +62,6 @@ namespace AddressBookApi.Tests
         {
             //Arrange
             await SetupAndRunHost();
-
             var firstAddress = new Address()
             {
                 Id = 1,
@@ -82,7 +69,6 @@ namespace AddressBookApi.Tests
                 City = "LONDON",
                 Street = "c"
             };
-            
             var secondAddress = new Address()
             {
                 Id = 2,
@@ -90,7 +76,6 @@ namespace AddressBookApi.Tests
                 City = "LONDON",
                 Street = "w"
             };
-
             var thirdAddress = new Address()
             {
                 Id = 3,
@@ -103,9 +88,7 @@ namespace AddressBookApi.Tests
             _memoryCacheService.Addresses.Add(secondAddress);
             _memoryCacheService.Addresses.Add(thirdAddress);
 
-           
-            // Assert
-            var expectedStr = JsonSerializer.Serialize(new List<Address> { firstAddress, secondAddress } );
+            var expectedStr = JsonSerializer.Serialize(new List<Address> { firstAddress, secondAddress });
 
             // Act
             var response = await _httpClient.GetAsync(_baseEndpoint + "/LONDON");
@@ -122,7 +105,6 @@ namespace AddressBookApi.Tests
         {
             //Arrange
             await SetupAndRunHost();
-
             var firstAddress = new Address()
             {
                 Id = 1,
@@ -132,7 +114,6 @@ namespace AddressBookApi.Tests
             };
 
             _memoryCacheService.Addresses.Add(firstAddress);
-
             _memoryCacheService.Addresses.Add(new Address()
             {
                 Id = 2,
@@ -141,7 +122,6 @@ namespace AddressBookApi.Tests
                 Street = "e"
             });
 
-            // Assert
             var expectedStr = JsonSerializer.Serialize(firstAddress);
 
             // Act
@@ -168,7 +148,6 @@ namespace AddressBookApi.Tests
 
             // Act
             var response = await _httpClient.PostAsync(_baseEndpoint, content);
-
             dynamic obj = JObject.Parse(await response.Content.ReadAsStringAsync());
 
             // Assert
@@ -181,7 +160,6 @@ namespace AddressBookApi.Tests
         {
             // Arrange
             await SetupAndRunHost();
-
             _memoryCacheService.Addresses.Add(new Address()
             {
                 Id = 1,
@@ -189,7 +167,6 @@ namespace AddressBookApi.Tests
                 City = "qq",
                 Street = "ww"
             });
-
             var content = new StringContent(JsonSerializer.Serialize(new Address
             {
                 Id = 1,
@@ -208,7 +185,7 @@ namespace AddressBookApi.Tests
             Assert.Equal("UPDATED", _memoryCacheService.Addresses.First(a => a.Id == 1).Name);
         }
 
-        [Fact] 
+        [Fact]
         public async Task Delete_ShouldWork()
         {
             // Arrange 

@@ -39,11 +39,11 @@ namespace AddressBookApi.Controllers
         }
 
         /// <summary>
-        /// Gets address by Id
+        /// Gets address by Id (I'm aware this endpoint is rather ugly but you wanted to have straight up /{city} endpoint and I had to solve it somehow)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("id/{id}")]
+        [HttpGet("id/{id}")] // Ok, I know it isn't great endpoint for id, but the /{city} endpoint collides with it (and as I understood the city needs stays in its from), so i cannot make simple /{id}
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> GetById(int id)
