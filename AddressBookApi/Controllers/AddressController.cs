@@ -34,7 +34,7 @@ namespace AddressBookApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
@@ -57,7 +57,6 @@ namespace AddressBookApi.Controllers
                 return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
-
 
         /// <summary>
         /// Gets addresses by city
