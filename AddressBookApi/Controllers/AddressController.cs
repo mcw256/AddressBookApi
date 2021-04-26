@@ -66,7 +66,7 @@ namespace AddressBookApi.Controllers
         [HttpGet("id/{id}")] // Ok, I know it isn't great endpoint for id, but the /{city} endpoint collides with it (and as I understood the city needs stays in its from), so i cannot make simple /{id}
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace AddressBookApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> Update(int id, [FromBody] Address address)
+        public async Task<IActionResult> Update(Guid id, [FromBody] Address address)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace AddressBookApi.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {

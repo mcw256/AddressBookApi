@@ -16,7 +16,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.GetById(System.Int32)">
+        <member name="M:AddressBookApi.Controllers.AddressController.GetById(System.Guid)">
             <summary>
             Gets address by Id (I'm aware this endpoint is rather ugly but you wanted to have straight up /{city} endpoint and I had to solve it somehow)
             </summary>
@@ -37,7 +37,7 @@
             <param name="address"></param>
             <returns></returns>
         </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.Update(System.Int32,AddressBookApi.Models.Address)">
+        <member name="M:AddressBookApi.Controllers.AddressController.Update(System.Guid,AddressBookApi.Models.Address)">
             <summary>
             Updates existing address
             </summary>
@@ -45,7 +45,7 @@
             <param name="address"></param>
             <returns></returns>
         </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.Delete(System.Int32)">
+        <member name="M:AddressBookApi.Controllers.AddressController.Delete(System.Guid)">
             <summary>
             Deletes address
             </summary>

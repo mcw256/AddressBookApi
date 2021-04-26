@@ -29,7 +29,7 @@ namespace AddressBookApi.Repositories
             return await Task.Run(() => _memoryCache.Addresses);
         }
 
-        public async Task<Address> GetAddressById(int id)
+        public async Task<Address> GetAddressById(Guid id)
         {
             if (!_memoryCache.Addresses.Exists(a => a.Id == id))
                 return new Address();
@@ -47,23 +47,18 @@ namespace AddressBookApi.Repositories
 
         public async Task<Address> AddNewAddress(Address address)
         {
-            if (_memoryCache.Addresses.Exists(a => a.Id == address.Id))
-                throw new Exception("Address with given Id already exists!");
+            address.Id = new Guid();
 
             await Task.Run(() => _memoryCache.Addresses.Add(address)); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
             return address;
         }
 
-        public async Task<Address> UpdateAddressById(int id, Address address)
+        public async Task<Address> UpdateAddressById(Guid id, Address address)
         {
-            var addressFound = _memoryCache.Addresses.FirstOrDefault(a => a.Id == id);
+            var addressFound = await Task.Run(() => _memoryCache.Addresses.FirstOrDefault(a => a.Id == id));
             if (addressFound == null)
                 throw new Exception("Address with given Id doesn't exist!");
 
-            if (await Task.Run(() => _memoryCache.Addresses.Exists(a => (address.Id != id) && (a.Id == address.Id)))) // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
-                throw new Exception("Address with given Id already exist!");
-
-            addressFound.Id = address.Id;
             addressFound.Name = address.Name;
             addressFound.City = address.City;
             addressFound.Street = address.Street;
@@ -71,7 +66,7 @@ namespace AddressBookApi.Repositories
             return addressFound;
         }
 
-        public async Task DeleteAddressById(int id)
+        public async Task DeleteAddressById(Guid id)
         {
             var itemToRemove = await Task.Run(() => _memoryCache.Addresses.SingleOrDefault(a => a.Id == id)); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
             if (itemToRemove == null)

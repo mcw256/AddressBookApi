@@ -1,4 +1,5 @@
 ﻿using AddressBookApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,15 +11,15 @@ namespace AddressBookApi.Repositories
 
         public Task<List<Address>> GetAllAddresses();
 
-        public Task<Address> GetAddressById(int id);
+        public Task<Address> GetAddressById(Guid id);
 
         public Task<List<Address>> GetAddressesByCity(string street);
 
         public Task<Address> AddNewAddress(Address address);
 
-        public Task<Address> UpdateAddressById(int id, Address address);
+        public Task<Address> UpdateAddressById(Guid id, Address address);
 
-        public Task DeleteAddressById(int id);
+        public Task DeleteAddressById(Guid id);
 
     }
 }
