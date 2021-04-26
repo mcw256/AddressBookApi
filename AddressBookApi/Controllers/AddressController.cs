@@ -39,6 +39,26 @@ namespace AddressBookApi.Controllers
         }
 
         /// <summary>
+        /// Gets list of all addresses
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Address>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                return Ok(await _addressRepo.GetAllAddresses());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
+            }
+        }
+
+
+        /// <summary>
         /// Gets address by Id (I'm aware this endpoint is rather ugly but you wanted to have straight up /{city} endpoint and I had to solve it somehow)
         /// </summary>
         /// <param name="id"></param>

@@ -8,6 +8,8 @@ namespace AddressBookApi.Repositories
     {
         public Task<Address> GetLastAddress();
 
+        public Task<List<Address>> GetAllAddresses();
+
         public Task<Address> GetAddressById(int id);
 
         public Task<List<Address>> GetAddressesByCity(string street);
