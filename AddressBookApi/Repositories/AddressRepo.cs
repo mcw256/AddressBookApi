@@ -47,7 +47,7 @@ namespace AddressBookApi.Repositories
 
         public async Task<Address> AddNewAddress(Address address)
         {
-            address.Id = new Guid();
+            address.Id = Guid.NewGuid();
 
             await Task.Run(() => _memoryCache.Addresses.Add(address)); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
             return address;
