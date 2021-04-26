@@ -9,11 +9,11 @@ namespace AddressBookApi.Repositories
     {
         public Task<Address> GetLastAddress();
 
-        public Task<List<Address>> GetAllAddresses();
+        public Task<IEnumerable<Address>> GetAllAddresses();
 
         public Task<Address> GetAddressById(Guid id);
 
-        public Task<List<Address>> GetAddressesByCity(string street);
+        public Task<IEnumerable<Address>> GetAddressesByCity(string street);
 
         public Task<Address> AddNewAddress(Address address);
 

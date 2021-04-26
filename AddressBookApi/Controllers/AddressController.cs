@@ -43,7 +43,7 @@ namespace AddressBookApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Address>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Address>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> GetAll()
         {
@@ -84,7 +84,7 @@ namespace AddressBookApi.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpGet("{city}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Address>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Address>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
         public async Task<IActionResult> GetByCity(string city)
         {

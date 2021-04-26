@@ -24,7 +24,7 @@ namespace AddressBookApi.Repositories
             return await Task.Run(() => _memoryCache.Addresses.Last()); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
         }
 
-        public async Task<List<Address>> GetAllAddresses()
+        public async Task<IEnumerable<Address>> GetAllAddresses()
         {
             return await Task.Run(() => _memoryCache.Addresses);
         }
@@ -37,7 +37,7 @@ namespace AddressBookApi.Repositories
             return await Task.Run(() => _memoryCache.Addresses.Where(a => a.Id == id).First()); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
         }
 
-        public async Task<List<Address>> GetAddressesByCity(string city)
+        public async Task<IEnumerable<Address>> GetAddressesByCity(string city)
         {
             if (!_memoryCache.Addresses.Exists(a => a.City == city))
                 return new List<Address>();
