@@ -19,147 +19,75 @@ namespace AddressBookApi.Controllers
             _addressRepo = addressRepo;
         }
 
-        /// <summary>
-        /// Gets last address
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> GetLast()
+        public async Task<IActionResult> Get([FromQuery] int page = 0, [FromQuery] string city = null, [FromQuery] string street = null)
         {
             try
             {
-                return Ok(await _addressRepo.GetLastAddress());
+                // TODO
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
+                // TODO
             }
         }
 
-        /// <summary>
-        /// Gets list of all addresses
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("all")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Address>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                return Ok(await _addressRepo.GetAllAddresses());
+                // TODO
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
+                // TODO
             }
         }
 
 
-        /// <summary>
-        /// Gets address by Id (I'm aware this endpoint is rather ugly but you wanted to have straight up /{city} endpoint and I had to solve it somehow)
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("id/{id}")] // Ok, I know it isn't great endpoint for id, but the /{city} endpoint collides with it (and as I understood the city needs stays in its from), so i cannot make simple /{id}
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            try
-            {
-                return Ok(await _addressRepo.GetAddressById(id));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
-            }
-        }
-
-        /// <summary>
-        /// Gets addresses by city
-        /// </summary>
-        /// <param name="city"></param>
-        /// <returns></returns>
-        [HttpGet("{city}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Address>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> GetByCity(string city)
-        {
-            try
-            {
-                return Ok(await _addressRepo.GetAddressesByCity(city));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
-            }
-        }
-
-        /// <summary>
-        /// Adds new address
-        /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
+        [HttpPost()]
         public async Task<IActionResult> Add([FromBody] Address address)
         {
             try
             {
-                await _addressRepo.AddNewAddress(address);
-                return CreatedAtAction(nameof(GetById), new { id = address.Id }, address);
+                // TODO
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
+                // TODO
             }
         }
 
-        /// <summary>
-        /// Updates existing address
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="address"></param>
-        /// <returns></returns>
+
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> Update(Guid id, [FromBody] Address address)
+        public async Task<IActionResult> Update(int id)
         {
             try
             {
-                return Ok(await _addressRepo.UpdateAddressById(id, address));
+                // TODO
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
+                // TODO
             }
         }
 
-        /// <summary>
-        /// Deletes address
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorResponse))]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _addressRepo.DeleteAddressById(id);
-                return Ok();
+                // TODO
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
+                // TODO
             }
         }
+
 
     }
 }
