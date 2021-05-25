@@ -1,5 +1,6 @@
 ﻿using AddressBookApi.Models;
 using AddressBookApi.Services;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,71 +10,58 @@ namespace AddressBookApi.Repositories
 {
     public class AddressRepo : IAddressRepo
     {
-        private readonly IMemoryCacheService _memoryCache;
+        private readonly IAddressDbService _addressDbService;
+        private readonly IApiSpecificSettings _apiSpecificSettings;
 
-        public AddressRepo(IMemoryCacheService memoryCache)
+        public AddressRepo(IAddressDbService addressDbService, IApiSpecificSettings apiSpecificSettings)
         {
-            _memoryCache = memoryCache;
+            _addressDbService = addressDbService;
+            _apiSpecificSettings = apiSpecificSettings;
         }
 
-        public async Task<Address> GetLastAddress()
+        public async Task<PageOfAddresses> GetAddresses(int page, string city, string street)
         {
-            if (_memoryCache.Addresses.Count == 0)
-                return new Address(); //return empty address
+            int pageSize = _apiSpecificSettings.PaginationPageSize;
 
-            return await Task.Run(() => _memoryCache.Addresses.Last()); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
+            page = (page <= 0) ? 1 : page;
+
+            var cityFilter = (city == null) ? Builders<Address>.Filter.Empty : Builders<Address>.Filter.Eq(x => x.City, city);
+            var streetFilter = (street == null) ? Builders<Address>.Filter.Empty : Builders<Address>.Filter.Eq(x => x.Street, street);
+            var combinedFilters = Builders<Address>.Filter.And(cityFilter, streetFilter);
+
+
+            // Paging could be optimized using Internal Mongo Aggregation
+            var data = await _addressDbService.AddressCollection.Find(combinedFilters)
+                .Skip((page - 1) * pageSize)
+                .Limit(pageSize)
+                .ToListAsync();
+
+            var count = await _addressDbService.AddressCollection.CountDocumentsAsync(combinedFilters);
+
+            var noOfPages = (int)Math.Ceiling((double)count/pageSize);
+
+            return new PageOfAddresses() { Items = data, CurrentPage = page, NoOfPages = noOfPages };
         }
 
-        public async Task<IEnumerable<Address>> GetAllAddresses()
+        public async Task<Address> GetAddressById(string id)
         {
-            return await Task.Run(() => _memoryCache.Addresses);
+            return (await _addressDbService.AddressCollection.Find(x => x.Id == id).ToListAsync()).FirstOrDefault();
         }
 
-        public async Task<Address> GetAddressById(Guid id)
-        {
-            if (!_memoryCache.Addresses.Exists(a => a.Id == id))
-                return new Address();
 
-            return await Task.Run(() => _memoryCache.Addresses.Where(a => a.Id == id).First()); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
+        public async Task AddNewAddress(Address address)
+        {
+            await _addressDbService.AddressCollection.InsertOneAsync(address);
         }
 
-        public async Task<IEnumerable<Address>> GetAddressesByCity(string city)
+        public async Task UpdateAddressById(string id, Address address)
         {
-            if (!_memoryCache.Addresses.Exists(a => a.City == city))
-                return new List<Address>();
-
-            return await Task.Run(() => _memoryCache.Addresses.Where(a => a.City == city).ToList()); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
+            await _addressDbService.AddressCollection.ReplaceOneAsync(x => x.Id == id, address);
         }
 
-        public async Task<Address> AddNewAddress(Address address)
+        public async Task DeleteAddressById(string id)
         {
-            address.Id = Guid.NewGuid();
-
-            await Task.Run(() => _memoryCache.Addresses.Add(address)); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
-            return address;
-        }
-
-        public async Task<Address> UpdateAddressById(Guid id, Address address)
-        {
-            var addressFound = await Task.Run(() => _memoryCache.Addresses.FirstOrDefault(a => a.Id == id));
-            if (addressFound == null)
-                throw new Exception("Address with given Id doesn't exist!");
-
-            addressFound.Name = address.Name;
-            addressFound.City = address.City;
-            addressFound.Street = address.Street;
-
-            return addressFound;
-        }
-
-        public async Task DeleteAddressById(Guid id)
-        {
-            var itemToRemove = await Task.Run(() => _memoryCache.Addresses.SingleOrDefault(a => a.Id == id)); // I'm aware this Task here is unneccessary. Did it just to force 'await' and to force whole API to be async
-            if (itemToRemove == null)
-                return;
-
-            await Task.Run(() => _memoryCache.Addresses.Remove(itemToRemove));
-            return;
+            await _addressDbService.AddressCollection.DeleteOneAsync(x => x.Id == id);
         }
 
     }

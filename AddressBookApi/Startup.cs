@@ -1,4 +1,5 @@
 using AddressBookApi.Middleware;
+using AddressBookApi.Models;
 using AddressBookApi.Repositories;
 using AddressBookApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 
@@ -25,8 +27,20 @@ namespace AddressBookApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            
-            services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
+
+            services.Configure<AddressDatabaseSettings>(
+                Configuration.GetSection(nameof(AddressDatabaseSettings)));
+
+            services.Configure<ApiSpecificSettings>(
+                Configuration.GetSection(nameof(ApiSpecificSettings)));
+
+            services.AddSingleton<IAddressDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<AddressDatabaseSettings>>().Value);
+
+            services.AddSingleton<IApiSpecificSettings>(sp =>
+                sp.GetRequiredService<IOptions<ApiSpecificSettings>>().Value);
+
+            services.AddSingleton<IAddressDbService, AddressDbService>();
             services.AddSingleton<IAddressRepo, AddressRepo>();
 
             services.AddControllers().AddJsonOptions(options =>
@@ -52,12 +66,12 @@ namespace AddressBookApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors( options =>
-            {
-                options.WithOrigins("http://localhost:4200");
-                options.AllowAnyMethod();
-                options.AllowAnyHeader();
-            });
+            app.UseCors(options =>
+           {
+               options.WithOrigins("http://localhost:4200");
+               options.AllowAnyMethod();
+               options.AllowAnyHeader();
+           });
 
             if (env.IsDevelopment())
             {

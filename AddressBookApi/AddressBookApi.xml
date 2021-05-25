@@ -4,53 +4,5 @@
         <name>AddressBookApi</name>
     </assembly>
     <members>
-        <member name="M:AddressBookApi.Controllers.AddressController.GetLast">
-            <summary>
-            Gets last address
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.GetAll">
-            <summary>
-            Gets list of all addresses
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.GetById(System.Guid)">
-            <summary>
-            Gets address by Id (I'm aware this endpoint is rather ugly but you wanted to have straight up /{city} endpoint and I had to solve it somehow)
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.GetByCity(System.String)">
-            <summary>
-            Gets addresses by city
-            </summary>
-            <param name="city"></param>
-            <returns></returns>
-        </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.Add(AddressBookApi.Models.Address)">
-            <summary>
-            Adds new address
-            </summary>
-            <param name="address"></param>
-            <returns></returns>
-        </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.Update(System.Guid,AddressBookApi.Models.Address)">
-            <summary>
-            Updates existing address
-            </summary>
-            <param name="id"></param>
-            <param name="address"></param>
-            <returns></returns>
-        </member>
-        <member name="M:AddressBookApi.Controllers.AddressController.Delete(System.Guid)">
-            <summary>
-            Deletes address
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
     </members>
 </doc>

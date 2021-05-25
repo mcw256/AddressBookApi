@@ -25,24 +25,24 @@ namespace AddressBookApi.Controllers
         {
             try
             {
-                // TODO
+                return Ok(await _addressRepo.GetAddresses(page, city, street));
             }
             catch (Exception e)
             {
-                // TODO
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
-                // TODO
+                return Ok(await _addressRepo.GetAddressById(id));
             }
             catch (Exception e)
             {
-                // TODO
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
@@ -52,39 +52,43 @@ namespace AddressBookApi.Controllers
         {
             try
             {
-                // TODO
+                await _addressRepo.AddNewAddress(address);
+                return Ok();
             }
+            
             catch (Exception e)
             {
-                // TODO
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> Update(string id, [FromBody] Address address)
         {
             try
             {
-                // TODO
+                await _addressRepo.UpdateAddressById(id, address);
+                return Ok();
             }
             catch (Exception e)
             {
-                // TODO
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                // TODO
+                await _addressRepo.DeleteAddressById(id);
+                return Ok();
             }
             catch (Exception e)
             {
-                // TODO
+                return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
 

@@ -7,19 +7,14 @@ namespace AddressBookApi.Repositories
 {
     public interface IAddressRepo
     {
-        public Task<Address> GetLastAddress();
+        public Task<PageOfAddresses> GetAddresses(int page, string city, string street);
 
-        public Task<IEnumerable<Address>> GetAllAddresses();
+        public Task<Address> GetAddressById(string id);
 
-        public Task<Address> GetAddressById(Guid id);
+        public Task AddNewAddress(Address address);
 
-        public Task<IEnumerable<Address>> GetAddressesByCity(string street);
+        public Task UpdateAddressById(string id, Address address);
 
-        public Task<Address> AddNewAddress(Address address);
-
-        public Task<Address> UpdateAddressById(Guid id, Address address);
-
-        public Task DeleteAddressById(Guid id);
-
+        public Task DeleteAddressById(string id);
     }
 }

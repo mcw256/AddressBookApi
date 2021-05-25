@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -6,17 +9,21 @@ namespace AddressBookApi.Models
 {
     public class Address
     {
-        
-        public Guid Id { get; set; }
+        [BsonId]
+        [BindNever]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
-        [Required]
+        [BsonElement("name")]
         public string Name { get; set; }
 
-        [Required]
+        [BsonElement("city")]
         public string City { get; set; }
 
-        [Required]
+        [BsonElement("street")]
         public string Street { get; set; }
 
     }
+
+
 }
