@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AddressBookApi.Services
 {
-    public interface IAddressDbService
+    public interface IAddressDbContext
     {
         public IMongoCollection<Address> AddressCollection { get; }
     }

@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace AddressBookApi.Models
 {
-    public class AddressDatabaseSettings : IAddressDatabaseSettings
+    public class AddressDatabaseSettings : IMongoDbSettings
     {
-        public string AddressCollectionName { get; set; }
+        public string CollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
 
-    public interface IAddressDatabaseSettings
+    public interface IMongoDbSettings
     {
-        public string AddressCollectionName { get; set; }
+        public string CollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }

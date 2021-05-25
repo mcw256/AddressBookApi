@@ -1,7 +1,8 @@
+using AddressBookApi.DAL.Repositories;
 using AddressBookApi.Middleware;
 using AddressBookApi.Models;
-using AddressBookApi.Repositories;
 using AddressBookApi.Services;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,18 +31,18 @@ namespace AddressBookApi
 
             services.Configure<AddressDatabaseSettings>(
                 Configuration.GetSection(nameof(AddressDatabaseSettings)));
-
             services.Configure<ApiSpecificSettings>(
                 Configuration.GetSection(nameof(ApiSpecificSettings)));
-
-            services.AddSingleton<IAddressDatabaseSettings>(sp =>
+            services.AddSingleton<IMongoDbSettings>(sp =>
                 sp.GetRequiredService<IOptions<AddressDatabaseSettings>>().Value);
-
             services.AddSingleton<IApiSpecificSettings>(sp =>
                 sp.GetRequiredService<IOptions<ApiSpecificSettings>>().Value);
 
-            services.AddSingleton<IAddressDbService, AddressDbService>();
+
+            services.AddSingleton<IAddressDbContext, AddressDbContext>();
             services.AddSingleton<IAddressRepo, AddressRepo>();
+
+            services.AddMediatR(typeof(Startup));
 
             services.AddControllers().AddJsonOptions(options =>
             {

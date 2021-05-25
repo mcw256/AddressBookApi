@@ -10,7 +10,6 @@ namespace AddressBookApi.Models
     public class Address
     {
         [BsonId]
-        [BindNever]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 

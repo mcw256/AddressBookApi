@@ -1,10 +1,14 @@
 ﻿using AddressBookApi.Models;
-using AddressBookApi.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AddressBookApi.Queries;
+using AddressBookApi.Requests;
+using AddressBookApi.Commands;
+using AddressBookApi.DAL.Repositories;
 
 namespace AddressBookApi.Controllers
 {
@@ -13,10 +17,12 @@ namespace AddressBookApi.Controllers
     public class AddressController : ControllerBase
     {
         private readonly IAddressRepo _addressRepo;
+        private readonly IMediator _mediator;
 
-        public AddressController(IAddressRepo addressRepo)
+        public AddressController(IAddressRepo addressRepo, IMediator mediator)
         {
             _addressRepo = addressRepo;
+            _mediator = mediator;
         }
 
 
@@ -25,7 +31,9 @@ namespace AddressBookApi.Controllers
         {
             try
             {
-                return Ok(await _addressRepo.GetAddresses(page, city, street));
+                var query = new GetAddressesQuery(page, city, street);
+                var result = await _mediator.Send(query);
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -38,7 +46,9 @@ namespace AddressBookApi.Controllers
         {
             try
             {
-                return Ok(await _addressRepo.GetAddressById(id));
+                var query = new GetAddressByIdQuery(id);
+                var result = await _mediator.Send(query);
+                return (result != null) ? (IActionResult)Ok(result) : NotFound();
             }
             catch (Exception e)
             {
@@ -46,29 +56,29 @@ namespace AddressBookApi.Controllers
             }
         }
 
-
-        [HttpPost()]
-        public async Task<IActionResult> Add([FromBody] Address address)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] AddAddressRequest addAddressRequest)
         {
             try
             {
-                await _addressRepo.AddNewAddress(address);
-                return Ok();
+                // this should be done via mapper i guess...
+                var command = new AddAddressCommand(addAddressRequest.Name, addAddressRequest.City, addAddressRequest.Street);
+                var result = await _mediator.Send(command);
+                return CreatedAtAction(nameof(this.GetById), new { id = result.Id });
             }
-            
             catch (Exception e)
             {
                 return BadRequest(new ErrorResponse() { ShortInfo = e.Message, AdditionalInfo = e.StackTrace });
             }
         }
-
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] Address address)
+        public async Task<IActionResult> Update(string id, [FromBody] UpdateAddressRequest updateAddressRequest)
         {
             try
             {
-                await _addressRepo.UpdateAddressById(id, address);
+                var command = new UpdateAddressCommand(id, updateAddressRequest.Name, updateAddressRequest.City, updateAddressRequest.Street);
+                await _mediator.Send(command);
                 return Ok();
             }
             catch (Exception e)
@@ -83,7 +93,8 @@ namespace AddressBookApi.Controllers
         {
             try
             {
-                await _addressRepo.DeleteAddressById(id);
+                var command = new DeleteAddressCommand(id);
+                var result = await _mediator.Send(command);
                 return Ok();
             }
             catch (Exception e)
