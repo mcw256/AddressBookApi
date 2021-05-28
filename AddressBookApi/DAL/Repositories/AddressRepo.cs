@@ -11,10 +11,10 @@ namespace AddressBookApi.DAL.Repositories
 {
     public class AddressRepo : IAddressRepo
     {
-        private readonly IAddressDbContext _addressDbContext;
+        private readonly IMongoDbClient _addressDbContext;
         private readonly IApiSpecificSettings _apiSpecificSettings;
 
-        public AddressRepo(IAddressDbContext addressDbService, IApiSpecificSettings apiSpecificSettings)
+        public AddressRepo(IMongoDbClient addressDbService, IApiSpecificSettings apiSpecificSettings)
         {
             _addressDbContext = addressDbService;
             _apiSpecificSettings = apiSpecificSettings;
