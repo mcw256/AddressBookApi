@@ -16,13 +16,14 @@ namespace AddressBookApi.Controllers
     [ApiController]
     public class AddressController : ControllerBase
     {
-        private readonly IAddressRepo _addressRepo;
         private readonly IMediator _mediator;
+        private readonly ITestingService _testingService;
 
-        public AddressController(IAddressRepo addressRepo, IMediator mediator)
+
+        public AddressController(IMediator mediator, ITestingService testingService)
         {
-            _addressRepo = addressRepo;
             _mediator = mediator;
+            _testingService = testingService;
         }
 
 

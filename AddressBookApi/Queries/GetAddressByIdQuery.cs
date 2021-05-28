@@ -15,6 +15,5 @@ namespace AddressBookApi.Queries
         {
             Id = id;
         }
-
     }
 }

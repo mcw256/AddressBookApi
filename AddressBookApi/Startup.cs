@@ -38,11 +38,11 @@ namespace AddressBookApi
             services.AddSingleton<IApiSpecificSettings>(sp =>
                 sp.GetRequiredService<IOptions<ApiSpecificSettings>>().Value);
 
-
             services.AddSingleton<IAddressDbContext, AddressDbContext>();
             services.AddSingleton<IAddressRepo, AddressRepo>();
 
             services.AddMediatR(typeof(Startup));
+
 
             services.AddControllers().AddJsonOptions(options =>
             {
