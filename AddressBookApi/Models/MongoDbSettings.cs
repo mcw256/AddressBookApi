@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AddressBookApi.Models
 {
-    public class AddressDatabaseSettings : IMongoDbSettings
+    public class MongoDbSettings : IMongoDbSettings
     {
         public string CollectionName { get; set; }
         public string ConnectionString { get; set; }

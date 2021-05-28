@@ -1,4 +1,5 @@
 ﻿using AddressBookApi.Commands;
+using AddressBookApi.DAL.Models;
 using AddressBookApi.DAL.Repositories;
 using MediatR;
 using System;
@@ -20,7 +21,7 @@ namespace AddressBookApi.Handlers.CommandHandlers
 
         public async Task<Unit> Handle(DeleteAddressCommand request, CancellationToken cancellationToken)
         {
-            await _addressRepo.DeleteAddressById(request.Id);
+            await _addressRepo.DeleteOne(x => x.Id == request.Id);
 
             return Unit.Value;
         }

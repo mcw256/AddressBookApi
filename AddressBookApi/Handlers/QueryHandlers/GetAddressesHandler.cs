@@ -1,4 +1,5 @@
-﻿using AddressBookApi.DAL.Repositories;
+﻿using AddressBookApi.DAL.Models;
+using AddressBookApi.DAL.Repositories;
 using AddressBookApi.Models;
 using AddressBookApi.Queries;
 using AddressBookApi.Responses;
@@ -14,14 +15,32 @@ namespace AddressBookApi.Handlers
     public class GetAddressesHandler : IRequestHandler<GetAddressesQuery, PageOfAddressesResponse>
     {
         private readonly IAddressRepo _addressRepo;
+        private readonly IApiSpecificSettings _apiSpecificSettings;
 
-        public GetAddressesHandler( IAddressRepo  addressRepo)
+        public GetAddressesHandler( IAddressRepo  addressRepo, IApiSpecificSettings apiSpecificSettings)
         {
             _addressRepo = addressRepo;
+            _apiSpecificSettings = apiSpecificSettings;
         }
 
         public async Task<PageOfAddressesResponse> Handle(GetAddressesQuery request, CancellationToken cancellationToken)
         {
+            IEnumerable<Address> addressesList;
+            if (request.City != null && request.Street != null)
+                addressesList = await _addressRepo.FindWithPaging(x => x.City == request.City && x.Street == request.Street, request.Page, _apiSpecificSettings.PaginationPageSize);
+
+            else if (request.City != null)
+                addressesList = await _addressRepo.FindWithPaging(x => x.City == request.City, request.Page, _apiSpecificSettings.PaginationPageSize);
+
+            else if (request.Street != null)
+                addressesList = await _addressRepo.FindWithPaging(x => x.Street == request.Street, request.Page, _apiSpecificSettings.PaginationPageSize);
+
+            else(request.Street != null)
+                addressesList = await _addressRepo.FindWithPaging(x => true, request.Page, _apiSpecificSettings.PaginationPageSize);
+
+
+            var addressesList = await _addressRepo.FindWithPaging()
+            
             var pageOfAddressesDto = await _addressRepo.GetAddresses(request.Page, request.City, request.Street);
 
             //maping

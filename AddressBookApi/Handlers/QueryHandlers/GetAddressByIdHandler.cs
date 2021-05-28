@@ -21,9 +21,10 @@ namespace AddressBookApi.Handlers
 
         public async Task<AddressResponse> Handle(GetAddressByIdQuery request, CancellationToken cancellationToken)
         {
-            var addressDto = await _addressRepo.GetAddressById(request.Id);
+            var addressModel = await _addressRepo.FindOne(x => x.Id == request.Id);
 
-            var addressResponse = new AddressResponse() { Id = addressDto.Id, Name = addressDto.Name, City = addressDto.City, Street = addressDto.Street };
+            // at this point I don't see sense in doing dto maping
+            var addressResponse = new AddressResponse() { Id = addressModel.Id, Name = addressModel.Name, City = addressModel.City, Street = addressModel.Street };
 
             return addressResponse;
         }

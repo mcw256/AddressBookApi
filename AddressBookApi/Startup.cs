@@ -29,12 +29,12 @@ namespace AddressBookApi
         {
             services.AddCors();
 
-            services.Configure<AddressDatabaseSettings>(
-                Configuration.GetSection(nameof(AddressDatabaseSettings)));
+            services.Configure<MongoDbSettings>(
+                Configuration.GetSection(nameof(MongoDbSettings)));
             services.Configure<ApiSpecificSettings>(
                 Configuration.GetSection(nameof(ApiSpecificSettings)));
             services.AddSingleton<IMongoDbSettings>(sp =>
-                sp.GetRequiredService<IOptions<AddressDatabaseSettings>>().Value);
+                sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
             services.AddSingleton<IApiSpecificSettings>(sp =>
                 sp.GetRequiredService<IOptions<ApiSpecificSettings>>().Value);
 
