@@ -1,5 +1,4 @@
-﻿using AddressBookApi.DAL.Dtos;
-using AddressBookApi.DAL.Models;
+﻿using AddressBookApi.DAL.Models;
 using AddressBookApi.DAL.Repositories.Base;
 using AddressBookApi.Models;
 using System;

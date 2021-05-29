@@ -7,12 +7,12 @@ namespace AddressBookApi.Models
 {
     public class ApiSpecificSettings : IApiSpecificSettings
     {
-        public int PaginationPageSize { get; set; }
+        public int PagingPageSize { get; set; }
 
     }
 
     public interface IApiSpecificSettings
     {
-        public int PaginationPageSize { get; set; }
+        public int PagingPageSize { get; set; }
     }
 }

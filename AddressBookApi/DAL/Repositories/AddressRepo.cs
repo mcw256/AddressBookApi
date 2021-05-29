@@ -1,8 +1,6 @@
-﻿using AddressBookApi.DAL.Dtos;
-using AddressBookApi.DAL.Models;
+﻿using AddressBookApi.DAL.Models;
 using AddressBookApi.DAL.Repositories.Base;
 using AddressBookApi.Models;
-using AddressBookApi.Services;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

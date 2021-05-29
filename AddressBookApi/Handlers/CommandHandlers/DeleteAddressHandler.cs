@@ -22,7 +22,6 @@ namespace AddressBookApi.Handlers.CommandHandlers
         public async Task<Unit> Handle(DeleteAddressCommand request, CancellationToken cancellationToken)
         {
             await _addressRepo.DeleteOne(x => x.Id == request.Id);
-
             return Unit.Value;
         }
     }

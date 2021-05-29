@@ -7,15 +7,9 @@ namespace AddressBookApi.Requests
 {
     public class UpdateAddressRequest
     {
-        public string Name { get; }
-        public string City { get; }
-        public string Street { get; }
+        public string Name { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
 
-        public UpdateAddressRequest(string name, string city, string street)
-        {
-            Name = name;
-            City = city;
-            Street = street;
-        }
     }
 }

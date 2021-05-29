@@ -1,7 +1,6 @@
 using AddressBookApi.DAL.Repositories;
 using AddressBookApi.Middleware;
 using AddressBookApi.Models;
-using AddressBookApi.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using System;
 using System.IO;
 
@@ -29,16 +29,13 @@ namespace AddressBookApi
         {
             services.AddCors();
 
-            services.Configure<MongoDbSettings>(
-                Configuration.GetSection(nameof(MongoDbSettings)));
-            services.Configure<ApiSpecificSettings>(
-                Configuration.GetSection(nameof(ApiSpecificSettings)));
-            services.AddSingleton<IMongoDbSettings>(sp =>
-                sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
-            services.AddSingleton<IApiSpecificSettings>(sp =>
-                sp.GetRequiredService<IOptions<ApiSpecificSettings>>().Value);
+            services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
+            services.AddSingleton<IMongoDbSettings>(sp => sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
-            services.AddSingleton<IMongoDbClient, MongoDbClient>();
+            services.Configure<ApiSpecificSettings>(Configuration.GetSection(nameof(ApiSpecificSettings)));
+            services.AddSingleton<IApiSpecificSettings>(sp => sp.GetRequiredService<IOptions<ApiSpecificSettings>>().Value);
+
+            services.AddSingleton<IMongoClient>(sp => new MongoClient(sp.GetRequiredService<IOptions<MongoDbSettings>>().Value.ConnectionString));
             services.AddSingleton<IAddressRepo, AddressRepo>();
 
             services.AddMediatR(typeof(Startup));
@@ -53,15 +50,14 @@ namespace AddressBookApi
             });
 
             services.AddSwaggerGen(options =>
-           {
-
+            {
                var XMLPath = AppDomain.CurrentDomain.BaseDirectory + nameof(AddressBookApi) + ".xml";
                if (File.Exists(XMLPath))
                {
                    options.IncludeXmlComments(XMLPath);
                }
 
-           });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

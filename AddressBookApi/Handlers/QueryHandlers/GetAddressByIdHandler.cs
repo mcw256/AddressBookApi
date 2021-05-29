@@ -23,7 +23,7 @@ namespace AddressBookApi.Handlers
         {
             var addressModel = await _addressRepo.FindOne(x => x.Id == request.Id);
 
-            // at this point I don't see sense in doing dto maping
+            // maping
             var addressResponse = new AddressResponse() { Id = addressModel.Id, Name = addressModel.Name, City = addressModel.City, Street = addressModel.Street };
 
             return addressResponse;

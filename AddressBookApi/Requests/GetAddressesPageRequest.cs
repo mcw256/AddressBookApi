@@ -7,15 +7,9 @@ namespace AddressBookApi.Requests
 {
     public class GetAddressesPageRequest
     {
-        public int PageNo { get; }
-        public string City { get; }
-        public string Street { get; }
+        public int PageNo { get; set; } = 0;
+        public string City { get; set; }
+        public string Street { get; set; }
 
-        public GetAddressesPageRequest(int pageNo, string city, string street)
-        {
-            PageNo = pageNo;
-            City = city;
-            Street = street;
-        }   
     }
 }

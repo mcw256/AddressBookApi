@@ -23,7 +23,6 @@ namespace AddressBookApi.Controllers
             _mediator = mediator;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAddressesPage([FromQuery] GetAddressesPageRequest getAddressesPageRequest)
         {
