@@ -17,22 +17,22 @@ namespace AddressBookApi.Controllers
     public class AddressController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ITestingService _testingService;
 
-
-        public AddressController(IMediator mediator, ITestingService testingService)
+        public AddressController(IMediator mediator)
         {
             _mediator = mediator;
-            _testingService = testingService;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] int page = 0, [FromQuery] string city = null, [FromQuery] string street = null)
+        public async Task<IActionResult> GetAddressesPage([FromQuery] GetAddressesPageRequest getAddressesPageRequest)
         {
             try
             {
-                var query = new GetAddressesQuery(page, city, street);
+                // request data validation should be here
+                // ...
+                // maping should be done differently
+                var query = new GetAddressesQuery(getAddressesPageRequest.PageNo, getAddressesPageRequest.City, getAddressesPageRequest.Street);
                 var result = await _mediator.Send(query);
                 return Ok(result);
             }
@@ -47,6 +47,9 @@ namespace AddressBookApi.Controllers
         {
             try
             {
+                // id validation here
+                // ...
+
                 var query = new GetAddressByIdQuery(id);
                 var result = await _mediator.Send(query);
                 return (result != null) ? (IActionResult)Ok(result) : NotFound();
@@ -62,7 +65,9 @@ namespace AddressBookApi.Controllers
         {
             try
             {
-                // this should be done via mapper i guess...
+                //request validation should be here
+                // ...
+
                 var command = new AddAddressCommand(addAddressRequest.Name, addAddressRequest.City, addAddressRequest.Street);
                 var result = await _mediator.Send(command);
                 return CreatedAtAction(nameof(this.GetById), new { id = result.Id });
@@ -78,6 +83,9 @@ namespace AddressBookApi.Controllers
         {
             try
             {
+                //request validation should be here
+                // ...
+
                 var command = new UpdateAddressCommand(id, updateAddressRequest.Name, updateAddressRequest.City, updateAddressRequest.Street);
                 await _mediator.Send(command);
                 return Ok();
@@ -94,6 +102,9 @@ namespace AddressBookApi.Controllers
         {
             try
             {
+                // id validation should be here
+                // ...
+                
                 var command = new DeleteAddressCommand(id);
                 var result = await _mediator.Send(command);
                 return Ok();

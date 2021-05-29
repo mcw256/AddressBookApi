@@ -1,24 +1,21 @@
-﻿using AddressBookApi.Models;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AddressBookApi.Queries
+namespace AddressBookApi.Requests
 {
-    public class GetAddressesQuery : IRequest<PageOfAddressesResponse>
+    public class GetAddressesPageRequest
     {
         public int PageNo { get; }
         public string City { get; }
         public string Street { get; }
 
-
-        public GetAddressesQuery(int page, string city, string street)
+        public GetAddressesPageRequest(int pageNo, string city, string street)
         {
-            PageNo = page;
+            PageNo = pageNo;
             City = city;
             Street = street;
-        }
+        }   
     }
 }
