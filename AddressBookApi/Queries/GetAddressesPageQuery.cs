@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace AddressBookApi.Queries
 {
-    public class GetAddressesQuery : IRequest<PageOfAddressesResponse>
+    public class GetAddressesPageQuery : IRequest<PageOfAddressesResponse>
     {
         public int PageNo { get; }
         public string City { get; }
         public string Street { get; }
 
-
-        public GetAddressesQuery(int page, string city, string street)
+        public GetAddressesPageQuery(int page, string city, string street)
         {
             PageNo = page;
             City = city;

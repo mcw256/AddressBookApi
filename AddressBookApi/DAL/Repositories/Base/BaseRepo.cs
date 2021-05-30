@@ -34,6 +34,11 @@ namespace AddressBookApi.DAL.Repositories.Base
                 .ToListAsync();
         }
 
+        public async Task<long> Count(Expression<Func<TModel, bool>> filter)
+        {
+            return await _collection.Find(filter).CountDocumentsAsync();
+        }
+
         public async Task<TModel> FindOne(Expression<Func<TModel, bool>> filter)
         {
             return (await _collection.Find(filter).ToListAsync()).FirstOrDefault();

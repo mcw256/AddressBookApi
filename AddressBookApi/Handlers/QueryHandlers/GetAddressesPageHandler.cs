@@ -7,12 +7,13 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AddressBookApi.Handlers
 {
-    public class GetAddressesPageHandler : IRequestHandler<GetAddressesQuery, PageOfAddressesResponse>
+    public class GetAddressesPageHandler : IRequestHandler<GetAddressesPageQuery, PageOfAddressesResponse>
     {
         private readonly IAddressRepo _addressRepo;
         private readonly IApiSpecificSettings _apiSpecificSettings;
@@ -23,23 +24,25 @@ namespace AddressBookApi.Handlers
             _apiSpecificSettings = apiSpecificSettings;
         }
 
-        public async Task<PageOfAddressesResponse> Handle(GetAddressesQuery request, CancellationToken cancellationToken)
+        public async Task<PageOfAddressesResponse> Handle(GetAddressesPageQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<Address> addressesList;
+            long addressesAmount;
+
+            Expression<Func<Address, bool>> filter;
             if (request.City != null && request.Street != null)
-                addressesList = await _addressRepo.FindWithPaging(x => x.City == request.City && x.Street == request.Street, request.PageNo, _apiSpecificSettings.PagingPageSize);
-
+                filter = x => x.City == request.City && x.Street == request.Street;
             else if (request.City != null)
-                addressesList = await _addressRepo.FindWithPaging(x => x.City == request.City, request.PageNo, _apiSpecificSettings.PagingPageSize);
-
+                filter = x => x.City == request.City;
             else if (request.Street != null)
-                addressesList = await _addressRepo.FindWithPaging(x => x.Street == request.Street, request.PageNo, _apiSpecificSettings.PagingPageSize);
-
+                filter = x => x.Street == request.Street;
             else
-                addressesList = await _addressRepo.FindWithPaging(x => true, request.PageNo, _apiSpecificSettings.PagingPageSize);
+                filter = x => true;
 
+            addressesList = await _addressRepo.FindWithPaging(filter, request.PageNo <= 0 ? 1 : request.PageNo, _apiSpecificSettings.PagingPageSize);
+            addressesAmount = await _addressRepo.Count(filter);
 
-            var totalPages = (int)Math.Ceiling((double)addressesList.Count() / _apiSpecificSettings.PagingPageSize);
+            var totalPages = (int)Math.Ceiling(addressesAmount / (double)_apiSpecificSettings.PagingPageSize);
 
             var pageOfAddressesResponse = new PageOfAddressesResponse()
             {

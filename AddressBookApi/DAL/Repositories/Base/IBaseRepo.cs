@@ -10,6 +10,7 @@ namespace AddressBookApi.DAL.Repositories.Base
     {
         public Task<IEnumerable<TModel>> Find(Expression<Func<TModel, bool>> filter);
         public Task<IEnumerable<TModel>> FindWithPaging(Expression<Func<TModel, bool>> filter, int pageNo, int pageSize);
+        public Task<long> Count(Expression<Func<TModel, bool>> filter);
         public Task<TModel> FindOne(Expression<Func<TModel, bool>> filter);
         public Task<TModel> AddOne(TModel item);
         public Task UpdateOne(Expression<Func<TModel, bool>> filter, TModel item);

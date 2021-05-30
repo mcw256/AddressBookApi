@@ -7,7 +7,7 @@ namespace AddressBookApi.Requests
 {
     public class GetAddressesPageRequest
     {
-        public int PageNo { get; set; } = 0;
+        public int PageNo { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
 

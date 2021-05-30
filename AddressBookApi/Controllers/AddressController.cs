@@ -31,7 +31,7 @@ namespace AddressBookApi.Controllers
                 // request data validation should be here
                 // ...
                 // maping should be done differently
-                var query = new GetAddressesQuery(getAddressesPageRequest.PageNo, getAddressesPageRequest.City, getAddressesPageRequest.Street);
+                var query = new GetAddressesPageQuery(getAddressesPageRequest.PageNo, getAddressesPageRequest.City, getAddressesPageRequest.Street);
                 var result = await _mediator.Send(query);
                 return Ok(result);
             }
