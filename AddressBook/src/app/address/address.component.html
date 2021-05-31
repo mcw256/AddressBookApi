@@ -1,0 +1,38 @@
+<div class="container">
+    <header>
+        <h1 class="display-4 mb-4 mt-2">AddressBook</h1>
+    </header>
+
+    <div class="row">
+        <div class="col-md-6">
+            <app-address-form></app-address-form>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <app-address-filter></app-address-filter>
+            </div>
+            
+            <div class="row">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>Street</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let a of service.pageOfAddresses.items">
+                            <td (click)="populateForm(a)">{{a.name}}</td>
+                            <td (click)="populateForm(a)">{{a.city}}</td>
+                            <td (click)="populateForm(a)">{{a.street}}</td>
+                            <td><i (click)="onDelete(a.id)" class="far fa-trash-alt fa-lg text-danger"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
