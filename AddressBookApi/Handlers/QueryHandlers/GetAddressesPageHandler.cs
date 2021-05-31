@@ -46,7 +46,7 @@ namespace AddressBookApi.Handlers
 
             var pageOfAddressesResponse = new PageOfAddressesResponse()
             {
-                CurrentPage = request.PageNo,
+                CurrentPage = request.PageNo <= 0 ? 1: request.PageNo,
                 TotalPages = totalPages,
                 Items = new List<AddressResponse>()
             };
